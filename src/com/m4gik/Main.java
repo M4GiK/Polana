@@ -38,7 +38,7 @@ public class Main {
     private static void exercise1a(Set<Rabbit> rabbits, Field field, LocalDateTime startDay, LocalDateTime endDay) {
         startGrasslandLife(rabbits, field, START_DAY, END_DAY);
         System.out.println("Porośnięcie polany przezd wieczornym posiłkiem dnia " + END_DAY + " wynosi: "
-                + round((field.getActualGreenAcreage() * 100.0) / field.getFieldArea(), 20) + "%");
+                + round((field.getActualGreenAcreage() * 100.0) / field.getFieldArea(), 2) + "%");
     }
 
     private static void startGrasslandLife(Set<Rabbit> rabbits, Field field, LocalDateTime startDateTime, LocalDateTime endDateTime) {
@@ -47,7 +47,6 @@ public class Main {
             rabbitConsuming(rabbits);
             field.growth(0.05);
             startDateTime = startDateTime.plusDays(1);
-            System.out.println(++i);
             if ((int)Duration.between(startDateTime, endDateTime).toHours() > RABBIT_DINNER_TIME) {
                 rabbitConsuming(rabbits);
             }
