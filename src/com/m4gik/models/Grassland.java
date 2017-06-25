@@ -1,4 +1,6 @@
-package com.m4gik;
+package com.m4gik.models;
+
+import com.m4gik.interfaces.Field;
 
 /**
  * Created by m4gik on 6/23/17.
@@ -10,7 +12,7 @@ public class Grassland implements Field {
 
     private static Grassland instance = null;
     protected Grassland(){}
-    static Grassland getInstance() {
+    public static Grassland getInstance() {
         if(instance == null) {
             instance = new Grassland();
         }

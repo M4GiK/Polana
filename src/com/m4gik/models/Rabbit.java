@@ -1,8 +1,11 @@
-package com.m4gik;
+package com.m4gik.models;
 
 /**
  * Created by m4gik on 6/23/17.
  */
+
+import com.m4gik.interfaces.Animal;
+import com.m4gik.interfaces.Field;
 
 /**
  * Na polanie żyje pewna ilość królików, które żywią się trawą.
@@ -17,7 +20,7 @@ public class Rabbit implements Animal {
     private Area foodDemand = null;
 
 
-    Rabbit(Field field) {
+    public Rabbit(Field field) {
         this.field = field;
     }
 

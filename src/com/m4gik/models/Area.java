@@ -1,4 +1,4 @@
-package com.m4gik;
+package com.m4gik.models;
 
 /**
  * Created by m4gik on 6/23/17.
@@ -7,7 +7,7 @@ public class Area implements Cloneable {
 
     private double acreage;
 
-    Area(double acreage) {
+    public Area(double acreage) {
         setAcreage(acreage);
     }
 

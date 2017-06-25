@@ -1,5 +1,10 @@
 package com.m4gik;
 
+import com.m4gik.interfaces.Field;
+import com.m4gik.models.Area;
+import com.m4gik.models.Grassland;
+import com.m4gik.models.Rabbit;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
@@ -24,16 +29,32 @@ public class Main {
         Set<Rabbit> rabbits = initializeRabbits(field);
 
         exercise1a(rabbits, field, START_DAY, END_DAY);
+        exercise1b(rabbits, field, START_DAY, END_DAY);
+    }
+
+    /**
+     * Załóżmy, że prowadzisz obserwacje polany codziennie pod wieczór
+     * (ale przed posiłkiem królików) — i tylko wtedy.
+     * Utwórz tabelkę przedstawiającą zależność zarośniętej powierzchni
+     * od czasu w okresie od 1 maja do 1 czerwca 2002 r.
+     *
+     * @param rabbits Sets of rabbits.
+     * @param field Grassland for rabbits.
+     * @param startDay Day, from which is started observation.
+     * @param endDay Day, from which is ended observation.
+     */
+    private static void exercise1b(Set<Rabbit> rabbits, Field field, LocalDateTime startDay, LocalDateTime endDay) {
+
     }
 
     /**
      * 1 a) Jaka część polany (w procentach) będzie zarośnięta 1 czerwca 2002 roku
      * tuż przed wieczornym posiłkiem królików? Wpisz odpowiedź (z dokładnością do 0,01%).
      *
-     * @param rabbits
-     * @param field
-     * @param startDay
-     * @param endDay
+     * @param rabbits Sets of rabbits.
+     * @param field Grassland for rabbits.
+     * @param startDay Day, from which is started observation.
+     * @param endDay Day, from which is ended observation.
      */
     private static void exercise1a(Set<Rabbit> rabbits, Field field, LocalDateTime startDay, LocalDateTime endDay) {
         startGrasslandLife(rabbits, field, START_DAY, END_DAY);
@@ -42,7 +63,6 @@ public class Main {
     }
 
     private static void startGrasslandLife(Set<Rabbit> rabbits, Field field, LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        int i=0;
         do {
             rabbitConsuming(rabbits);
             field.growth(0.05);

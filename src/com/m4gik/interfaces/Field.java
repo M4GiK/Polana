@@ -1,4 +1,4 @@
-package com.m4gik;
+package com.m4gik.interfaces;
 
 /**
  * Created by m4gik on 6/23/17.
