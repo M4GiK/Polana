@@ -1,5 +1,6 @@
 package com.m4gik.models;
 
+import com.m4gik.Main;
 import com.m4gik.interfaces.Field;
 
 /**
@@ -31,7 +32,7 @@ public class Grassland implements Field {
         double growth = (this.squareMeters.getAcreage() - getActualGreenAcreage()) * percentage;
         setActualGreenAcreage(getActualGreenAcreage() + growth);
 
-        return String.valueOf(growth);
+        return String.valueOf(Main.round(growth, 2) + " m^2");
     }
 
     @Override

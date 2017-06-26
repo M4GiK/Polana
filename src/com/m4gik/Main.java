@@ -23,7 +23,7 @@ public class Main {
     private static final int RABBIT_AMOUNT = 100;
     private static final int RABBIT_DINNER_TIME = 19;
     private static final LocalDateTime START_DAY = LocalDateTime.of(2002, Month.MAY, 1, 0, 0);
-    private static final LocalDateTime END_DAY = LocalDateTime.of(2002, Month.JUNE, 1, RABBIT_DINNER_TIME, 0);
+    private static final LocalDateTime END_DAY = LocalDateTime.of(2002, Month.JUNE, 2, RABBIT_DINNER_TIME, 0);
     private static final String RABBIT_DATE_BREAKFAST_CONSUMING_HEADER = "Data porannego posiłku";
     private static final String RABBIT_DATE_DINNER_CONSUMING_HEADER = "Data wieczorengo posiłku";
     private static final String RABBIT_FIELD_BREAKFAST_CONSUMING_HEADER = "Wielkość zielonej polany po świcie";

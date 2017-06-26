@@ -2,10 +2,9 @@ package com.m4gik.models;
 
 import com.m4gik.interfaces.FileIO;
 import com.m4gik.models.table.Column;
+import com.m4gik.models.table.Row;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,29 +34,30 @@ public class FileOperations implements FileIO {
     public FileOutputStream addFileContent(List<DayInformation> dayInformations) throws IOException {
         PrintWriter printWriter = new PrintWriter(this.outFile);
         Set<String> uniqueColumns = new LinkedHashSet<>();
-        for (DayInformation dayInformation : dayInformations) {
-            createUniqueHeader(uniqueColumns, dayInformation);
-        }
-
-        for(String uniqueColumn: uniqueColumns ) {
-            printWriter.print(" | " + uniqueColumn);
-            System.out.print(" | " + uniqueColumn);
-        }
-
-//        for (DayInformation dayInformation : dayInformations) {
-//            printWriter.println(" | " + dayInformation.getTable().getRows());
-//            System.out.println(" | " + uniqueColumn);
-//        }
+        for (DayInformation dayInformation : dayInformations)
+            createUniqueHeader(uniqueColumns, printWriter, dayInformation);
+        for (DayInformation dayInformation : dayInformations)
+            createData(printWriter, dayInformation);
 
         printWriter.close();
 
         return this.outFile;
     }
 
-    private void createUniqueHeader(Set<String> uniqueColumns, DayInformation dayInformation) {
-        for (Column column : dayInformation.getTable().getColums()) {
+    private void createUniqueHeader(Set<String> uniqueColumns, PrintWriter printWriter, DayInformation dayInformation) {
+        for(Column column : dayInformation.getTable().getColums()) {
             if(!uniqueColumns.contains(column.getColumnName())) {
                 uniqueColumns.add(column.getColumnName());
+                printWriter.print(" | " + column.getColumnName());
+            }
+        }
+    }
+
+    private void createData(PrintWriter printWriter, DayInformation dayInformation) {
+        printWriter.println("");
+        for(Column column : dayInformation.getTable().getColums()) {
+            for(Row row: dayInformation.getTable().getRows(column)) {
+                printWriter.print(" | " + row.getRow());
             }
         }
     }
