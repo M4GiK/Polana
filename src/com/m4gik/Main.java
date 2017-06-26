@@ -1,29 +1,38 @@
 package com.m4gik;
 
 import com.m4gik.interfaces.Field;
-import com.m4gik.models.Area;
-import com.m4gik.models.Grassland;
-import com.m4gik.models.Rabbit;
+import com.m4gik.models.*;
+import com.m4gik.models.table.Row;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Main {
 
-    private final static double ACREAGE = 30000.0;
-    private final static double RABBIT_MEAL_SIZE = 0.25;
-    private final static int RABBIT_AMOUNT = 100;
-    private final static int RABBIT_DINNER_TIME = 19;
-    private final static LocalDateTime START_DAY = LocalDateTime.of(2002, Month.MAY, 1, 0, 0);
-    private final static LocalDateTime END_DAY = LocalDateTime.of(2002, Month.JUNE, 1, RABBIT_DINNER_TIME, 0);
+    private static final double ACREAGE = 30000.0;
+    private static final double RABBIT_MEAL_SIZE = 0.25;
+    private static final int RABBIT_AMOUNT = 100;
+    private static final int RABBIT_DINNER_TIME = 19;
+    private static final LocalDateTime START_DAY = LocalDateTime.of(2002, Month.MAY, 1, 0, 0);
+    private static final LocalDateTime END_DAY = LocalDateTime.of(2002, Month.JUNE, 1, RABBIT_DINNER_TIME, 0);
+    private static final String RABBIT_DATE_BREAKFAST_CONSUMING_HEADER = "Data porannego posiłku";
+    private static final String RABBIT_DATE_DINNER_CONSUMING_HEADER = "Data wieczorengo posiłku";
+    private static final String RABBIT_FIELD_BREAKFAST_CONSUMING_HEADER = "Wielkość zielonej polany po świcie";
+    private static final String RABBIT_FIELD_DINNER_CONSUMING_HEADER = "Wielkość zielonej polany pod wieczór";
+    private static final String FIELD_GROWTH_HEADER = "Wzrost polany";
+    private static final String TABLE_FILE_NAME = "tabelka.txt";
 
 
-    public static void main(String[] args) throws CloneNotSupportedException {
+    public static void main(String[] args) throws CloneNotSupportedException, IOException {
         System.out.println("M4GiK Software - Polana program");
         Field field = initializeGrassland();
         Set<Rabbit> rabbits = initializeRabbits(field);
@@ -43,8 +52,9 @@ public class Main {
      * @param startDay Day, from which is started observation.
      * @param endDay Day, from which is ended observation.
      */
-    private static void exercise1b(Set<Rabbit> rabbits, Field field, LocalDateTime startDay, LocalDateTime endDay) {
-
+    private static void exercise1b(Set<Rabbit> rabbits, Field field, LocalDateTime startDay, LocalDateTime endDay) throws IOException {
+        FileOperations fileOperations = new FileOperations(TABLE_FILE_NAME);
+        fileOperations.saveFile(fileOperations.addFileContent(startGrasslandLife(rabbits, field, START_DAY, END_DAY)));
     }
 
     /**
@@ -62,21 +72,31 @@ public class Main {
                 + round((field.getActualGreenAcreage() * 100.0) / field.getFieldArea(), 2) + "%");
     }
 
-    private static void startGrasslandLife(Set<Rabbit> rabbits, Field field, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    private static List<DayInformation> startGrasslandLife(Set<Rabbit> rabbits, Field field, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        List<DayInformation> daysInformations = new ArrayList<>();
+
         do {
-            rabbitConsuming(rabbits);
-            field.growth(0.05);
+            DayInformation dayInformation = new DayInformation();
+            dayInformation.addInformation(RABBIT_DATE_BREAKFAST_CONSUMING_HEADER, startDateTime);
+            dayInformation.addInformation(RABBIT_FIELD_BREAKFAST_CONSUMING_HEADER, rabbitConsuming(rabbits, field));
+            dayInformation.addInformation(FIELD_GROWTH_HEADER, field.growth(0.05));
+            dayInformation.addInformation(RABBIT_DATE_DINNER_CONSUMING_HEADER, startDateTime.plusHours(RABBIT_DINNER_TIME));
             startDateTime = startDateTime.plusDays(1);
             if ((int)Duration.between(startDateTime, endDateTime).toHours() > RABBIT_DINNER_TIME) {
-                rabbitConsuming(rabbits);
+                dayInformation.addInformation(RABBIT_FIELD_DINNER_CONSUMING_HEADER, rabbitConsuming(rabbits, field));
             }
+            daysInformations.add(dayInformation);
         } while (Duration.between(startDateTime, endDateTime).toDays() > 0);
+
+        return daysInformations;
     }
 
-    private static void rabbitConsuming(Set<Rabbit> rabbits) {
+    private static Row rabbitConsuming(Set<Rabbit> rabbits, Field field) {
         for (Rabbit rabbit : rabbits) {
             rabbit.eating();
         }
+
+        return new Row(round((field.getActualGreenAcreage() * 100.0) / field.getFieldArea(), 2) + "%");
     }
 
     private static Set<Rabbit> initializeRabbits(Field field) {

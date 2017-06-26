@@ -7,7 +7,7 @@ public interface Field {
 
     void setFieldArea(double squareMeters) throws CloneNotSupportedException;
 
-    void growth(double percentage);
+    String growth(double percentage);
 
     void setActualGreenAcreage(double acreage);
 

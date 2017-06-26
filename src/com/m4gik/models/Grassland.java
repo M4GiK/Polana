@@ -16,6 +16,7 @@ public class Grassland implements Field {
         if(instance == null) {
             instance = new Grassland();
         }
+
         return instance;
     }
 
@@ -26,8 +27,11 @@ public class Grassland implements Field {
     }
 
     @Override
-    public void growth(double percentage) {
-        setActualGreenAcreage(getActualGreenAcreage() +  (this.squareMeters.getAcreage() - getActualGreenAcreage()) * percentage);
+    public String growth(double percentage) {
+        double growth = (this.squareMeters.getAcreage() - getActualGreenAcreage()) * percentage;
+        setActualGreenAcreage(getActualGreenAcreage() + growth);
+
+        return String.valueOf(growth);
     }
 
     @Override

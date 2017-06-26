@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
  */
 public interface FileIO {
 
-    FileOutputStream saveFile(File filepath) throws FileNotFoundException;
+    boolean saveFile(FileOutputStream fileOutputStream) throws FileNotFoundException;
 
     FileInputStream loadFile(File filepath) throws FileNotFoundException;
 }
